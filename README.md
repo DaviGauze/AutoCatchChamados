@@ -10,7 +10,7 @@ Com isso em vista, criei o AutoCatchChamados visando diminuir em 90% o tempo dos
 
  - **Verificação**: O sistema fica buscando um novo chamado a cada 2 segundos. Caso não encontre ele apenas tenta novamente.
 
-  - **Catch** Quando um novo chamado for encontrado, o mouse é "transferido" ao chamado, onde o usuário deve clicar para que seja capturado o chamado
+  - **Catch**: Quando um novo chamado for encontrado, o mouse é "transferido" ao chamado, onde o usuário deve clicar para que seja capturado o chamado
 
 ## Instalação
 Você deve clonar o repositório 
