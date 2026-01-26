@@ -12,7 +12,7 @@ def pegar_chamado():
             
             if target:
                 pyautogui.moveTo(target, duration=0.1)
-                print(f"Movi o mouse para {target}. Ele está em cima do botão?")
+                print(f"Mouse movido para {target}.")
                 
         except pyautogui.ImageNotFoundException:
             print(".", end="", flush=True) 
