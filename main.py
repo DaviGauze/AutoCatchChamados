@@ -12,7 +12,7 @@ def pegar_chamado():
                 target = pyautogui.locateCenterOnScreen('status_novo.png', confidence=CONFIDENCE_LEVEL)
                 
                 if target:
-                    pyautogui.moveTo(target, duration=0.1)
+                    pyautogui.click(target, duration=0.1)
                     print(f"Chamado encontrado, Mouse movido para {target}.")
                     
             except pyautogui.ImageNotFoundException:
