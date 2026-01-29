@@ -3,10 +3,10 @@ import time
 
 CONFIDENCE_LEVEL = 0.68 
 CHECK_INTERVAL = 2
-status = ['status_transf.png','status_novo.png']
+status = ['status_novo.png','status_transf.png']
 status_target = {
-    'status_transf.png': 0.85,
-    'status_novo.png':  0.70
+    ('status_transf.png', 0.5),
+    ('status_novo.png', 0.75)
 }
 
 def pegar_chamado():
@@ -14,14 +14,13 @@ def pegar_chamado():
     try:
         while True:
             try:
-                for imagem, precisao in status_target.items():
+                for imagem, precisao in status_target:
                     target = pyautogui.locateCenterOnScreen(imagem, confidence=precisao)
 
                     if target:
                         pyautogui.click(target, duration=0.1)
-                        print(f"{imagem} Capturada, Mouse movido para {target}.")
-                        time.sleep(4)
-                        break
+                        print(f"Chamado Capturado, Mouse movido para {target}.")
+                        time.sleep(2)
                     
             except pyautogui.ImageNotFoundException:
                 print("Procurando novos chamados.\n", end="", flush=True) 
