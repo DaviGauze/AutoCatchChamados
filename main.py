@@ -5,8 +5,8 @@ CONFIDENCE_LEVEL = 0.68
 CHECK_INTERVAL = 2
 status = ['status_novo.png','status_transf.png']
 status_target = {
-    ('status_transf.png', 0.5),
-    ('status_novo.png', 0.75)
+    ('status_novo.png', 0.7),
+    ('status_transf.png', 0.9)
 }
 
 def pegar_chamado():
@@ -15,7 +15,7 @@ def pegar_chamado():
         while True:
             try:
                 for imagem, precisao in status_target:
-                    target = pyautogui.locateCenterOnScreen(imagem, confidence=precisao)
+                    target = pyautogui.locateCenterOnScreen(imagem, confidence=precisao, grayscale=True)
 
                     if target:
                         pyautogui.click(target, duration=0.1)
