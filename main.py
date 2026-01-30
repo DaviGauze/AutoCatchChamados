@@ -5,7 +5,7 @@ from google.genai import types
 from PIL import Image
 import json
 
-client = genai.Client(api_key="AIzaSyA6UJC4X6FDS8_7aUUpI-bEW72zKvZw9sA")
+client = genai.Client(api_key="")
 
 # The client gets the API key from the environment variable `GEMINI_API_KEY`.
 client = genai.Client()
