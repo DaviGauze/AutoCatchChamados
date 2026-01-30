@@ -1,33 +1,49 @@
 import pyautogui
 import time
+from google import genai
+from google.genai import types
+from PIL import Image
+import json
 
-CONFIDENCE_LEVEL = 0.68 
-CHECK_INTERVAL = 2
-status = ['status_novo.png','status_transf.png']
-status_target = {
-    ('status_novo.png', 0.7),
-    ('status_transf.png', 0.9)
-}
+client = genai.Client(api_key="AIzaSyA6UJC4X6FDS8_7aUUpI-bEW72zKvZw9sA")
 
-def pegar_chamado():
-    print("Monitorando novos chamados no Desk Manager...")
-    try:
-        while True:
-            try:
-                for imagem, precisao in status_target:
-                    target = pyautogui.locateCenterOnScreen(imagem, confidence=precisao, grayscale=True)
+# The client gets the API key from the environment variable `GEMINI_API_KEY`.
+client = genai.Client()
 
-                    if target:
-                        pyautogui.click(target, duration=0.1)
-                        print(f"Chamado Capturado, Mouse movido para {target}.")
-                        time.sleep(2)
-                    
-            except pyautogui.ImageNotFoundException:
-                print("Procurando novos chamados.\n", end="", flush=True) 
+response = client.models.generate_content(
+    model="gemini-1.5-flash", contents="Explain how AI works in a few words"
+)
+print(response.text)
 
-            time.sleep(CHECK_INTERVAL)
-                
-    except KeyboardInterrupt:
-        print("\nParando a busca por chamados.")              
-            
-pegar_chamado()
+# Object detection
+
+client = genai.Client()
+prompt = "Detect the all of the prominent items in the image. The box_2d should be [ymin, xmin, ymax, xmax] normalized to 0-1000."
+
+image = Image.open("status_novo.png")
+
+config = types.GenerateContentConfig(
+  response_mime_type="application/json"
+  )
+
+response = client.models.generate_content(model="gemini-1.5-flash",
+                                          contents=[image, prompt],
+                                          config=config
+                                          )
+
+width, height = image.size
+bounding_boxes = json.loads(response.text)
+
+converted_bounding_boxes = []
+for bounding_box in bounding_boxes:
+    abs_y1 = int(bounding_box["box_2d"][0]/1000 * height)
+    abs_x1 = int(bounding_box["box_2d"][1]/1000 * width)
+    abs_y2 = int(bounding_box["box_2d"][2]/1000 * height)
+    abs_x2 = int(bounding_box["box_2d"][3]/1000 * width)
+    converted_bounding_boxes.append([abs_x1, abs_y1, abs_x2, abs_y2])
+
+print("Image size: ", width, height)
+print("Bounding boxes:", converted_bounding_boxes)
+
+
+
