@@ -7,43 +7,52 @@ import json
 
 client = genai.Client(api_key="")
 
-# The client gets the API key from the environment variable `GEMINI_API_KEY`.
-client = genai.Client()
+def capturar_chamados(image_path, target_text):
+    image = image.open(image_path)
+    width, height = image.size
 
-response = client.models.generate_content(
-    model="gemini-1.5-flash", contents="Explain how AI works in a few words"
-)
-print(response.text)
-
-# Object detection
-
-client = genai.Client()
-prompt = "Detect the all of the prominent items in the image. The box_2d should be [ymin, xmin, ymax, xmax] normalized to 0-1000."
-
-image = Image.open("status_novo.png")
-
-config = types.GenerateContentConfig(
-  response_mime_type="application/json"
-  )
-
-response = client.models.generate_content(model="gemini-1.5-flash",
-                                          contents=[image, prompt],
-                                          config=config
-                                          )
-
-width, height = image.size
-bounding_boxes = json.loads(response.text)
-
-converted_bounding_boxes = []
-for bounding_box in bounding_boxes:
-    abs_y1 = int(bounding_box["box_2d"][0]/1000 * height)
-    abs_x1 = int(bounding_box["box_2d"][1]/1000 * width)
-    abs_y2 = int(bounding_box["box_2d"][2]/1000 * height)
-    abs_x2 = int(bounding_box["box_2d"][3]/1000 * width)
-    converted_bounding_boxes.append([abs_x1, abs_y1, abs_x2, abs_y2])
-
-print("Image size: ", width, height)
-print("Bounding boxes:", converted_bounding_boxes)
+    prompt = "Detect all of the objects with the text, NOVO and TRANFERENCIA, and return their bounding boxes in the format [y1, x1, y2, x2] where the coordinates are normalized between 0 and 1000."
 
 
 
+    config = types.GenerateContentConfig(
+    response_mime_type="application/json"
+    )
+
+    response = client.models.generate_content(
+        model="gemini-1.5-flash",
+        contents=[image, prompt],
+        config=config
+    )
+
+    try:
+        detections = json.loads(response.text)
+
+        converted_boxes = []
+        for det in detections:
+            ymin, xmin, ymax, xmax = det["box_2d"]
+
+            abs_x1 = int(xmin / 1000 * width)
+            abs_y1 = int(ymin / 1000 * height)
+            abs_x2 = int(xmax / 1000 * width)
+            abs_y2 = int(ymax / 1000 * height)
+
+            center_x = (abs_x1 + abs_x2) // 2
+            center_y = (abs_y1 + abs_y2) // 2
+
+            converted_boxes.append({
+              "label": det.get("label", "target"),
+                "box": [abs_x1, abs_y1, abs_x2, abs_y2],
+                "center": (center_x, center_y)
+            })
+
+            return converted_boxes
+    except Exception as e:
+        print(f"Erro ao processar imagem {image_path}: {e}")
+        return []
+    
+print("Buscando botão NOVO...")
+resultados = get_buttons_coordinates("status_novo.png", "NOVO")
+
+for item in resultados:
+    print(f"Encontrado: {item['label']} em {item['box']} | Centro: {item['center']}")
