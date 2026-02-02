@@ -15,17 +15,25 @@ Com isso em vista, criei o AutoCatchChamados visando diminuir em 90% o tempo dos
 ## Instalação
 Você deve clonar o repositório 
   ```bash
- git clone https://github.com/DaviGauze/AutoCatchChamados.git
+git clone https://github.com/DaviGauze/AutoCatchChamados.git
  ```
- e utilizar o comando
+ instalar as dependências do projeto com o comando
+```
+python -m pip install pyautogui opencv-python Pillow
+ ```
+ ou
+ ```
+pip install pyautogui opencv-python Pillow
+ ```
+
+ e utilizar um dos seguintes comandos para iniciar a aplicação e iniciar a busca por novos chamados
 ```bash 
 python main.py 
 ``` 
-ou o comando
 ```bash 
- pip run main.py
+pip run main.py
 ```
-para rodar a aplicação e iniciar a busca por novos chamados
+
 
 ## Contribuição
 Fico feliz em receber contribuições para o projeto! Para garantir que a colaboração seja eficaz e organizada, por favor, siga estes passos (e lembre de verificar com a liderança da sua organização se a utilização de uma aplicação como essa é permitida) 
