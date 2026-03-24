@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoCatchChamados</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>AutoCatchChamados</h1>
+      <p class="subtitle">Automação de Captura de Chamados</p>
+    </div>
+
+    <div class="control-section">
+      <label class="toggle-container">
+        <input type="checkbox" id="enableToggle">
+        <span class="toggle-switch"></span>
+        <span class="toggle-label">Monitoramento Ativo</span>
+      </label>
+      <div id="statusIndicator" class="status-off">Desativado</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="log-section">
+      <div class="log-header">
+        <h2>Histórico de Captura</h2>
+        <button id="clearLogBtn" class="btn-small">Limpar</button>
+      </div>
+
+      <div id="logContainer" class="log-container">
+        <p class="no-tickets">Nenhum chamado capturado</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="footer">
+      <p class="version">v1.0.0</p>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

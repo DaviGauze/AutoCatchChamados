@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "AutoCatchChamados",
+  "version": "1.0.0",
+  "description": "Automatically catch new support tickets in DeskManager",
+  "permissions": [
+    "storage",
+    "scripting",
+    "activeTab",
+    "notifications"
+  ],
+  "host_permissions": [
+    "*://deskmanager.com.br/*",
+    "*://*.deskmanager.com.br/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://deskmanager.com.br/*",
+        "*://*.deskmanager.com.br/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "AutoCatchChamados"
+  },
+  "icons": {
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  }
+}
